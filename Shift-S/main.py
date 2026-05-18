@@ -30,9 +30,9 @@ class ControladorCalculadora:
         if estado == "inversa":
             self.view.lbl_res.setText("Estado: Operación No Soportada")
         elif estado == "directa":
-            self.view.lbl_res.setText("Procedimiento y Solución (Transformada Directa):")
+            self.view.lbl_res.setText("Procedimiento y Solución: ")
         else:
-            self.view.lbl_res.setText("Procedimiento y Solución:")
+            self.view.lbl_res.setText("Procedimiento y Solución: ")
 
         self.view.mostrar_html(resultado_html)
         
