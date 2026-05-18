@@ -1,9 +1,8 @@
-# main.py
 import sys
 from PyQt6.QtWidgets import QApplication
 
 from view.interfaz_grafica import InterfazCalculadora
-from model.solver_matematico import SolverLaplace
+from model.solve_math import SolverLaplace
 from view.utilidades_html import generar_html
 
 class ControladorCalculadora:
