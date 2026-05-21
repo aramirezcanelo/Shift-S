@@ -8,13 +8,13 @@ from PyQt6.QtWebEngineCore import QWebEngineSettings
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
-# ── Paleta Estilo Windows 11 Oscuro (Único Tema) ──────────────────────────────
+# ── Paleta Estilo Windows 11 Oscuro ──────────────────────────────────────────
 THEMES = {
     "dark": {
         "bg":           "#1c1c1c",
-        "bg2":          "#202020",     
-        "surface":      "#2d2d2d",      
-        "border":       "rgba(255, 255, 255, 0.05)",  
+        "bg2":          "#202020",
+        "surface":      "#2d2d2d",
+        "border":       "rgba(255, 255, 255, 0.05)",
         "accent":       "#60cdff",
         "accent_hover": "#52b1dc",
         "accent_press": "#4396bd",
@@ -112,14 +112,14 @@ def build_stylesheet(t: dict) -> str:
     QPushButton[category="func"]:hover {{ background-color: {t['func_hover']}; }}
     QPushButton[category="op"] {{ background-color: {t['op_bg']}; color: {t['op_fg']}; }}
     QPushButton[category="op"]:hover  {{ background-color: {t['op_hover']}; }}
-    
+
     QPushButton#btn_info {{
         background-color: transparent; color: {t['text2']};
         border: none; border-radius: 4px; font-size: 14px;
         min-width: 32px; max-width: 32px; min-height: 32px; max-height: 32px;
     }}
     QPushButton#btn_info:hover {{ background-color: {t['surface']}; color: {t['text']}; }}
-    
+
     QPushButton#btn_ir {{
         background-color: {t['accent']}; color: #000000;
         border-radius: 4px; font-size: 14px; font-weight: 500;
@@ -127,14 +127,14 @@ def build_stylesheet(t: dict) -> str:
     }}
     QPushButton#btn_ir:hover   {{ background-color: {t['accent_hover']}; }}
     QPushButton#btn_ir:pressed {{ background-color: {t['accent_press']}; }}
-    
+
     QPushButton#btn_limpiar {{
         background-color: {t['op_bg']}; color: {t['text']};
         border-radius: 4px; font-size: 14px;
         padding: 10px; border: 1px solid {t['border']};
     }}
     QPushButton#btn_limpiar:hover {{ background-color: {t['op_hover']}; }}
-    
+
     QListWidget {{
         border: 1px solid {t['border']}; border-radius: 4px;
         background-color: {t['bg2']}; color: {t['text2']};
@@ -143,10 +143,10 @@ def build_stylesheet(t: dict) -> str:
     QListWidget::item {{ padding: 6px 8px; border-radius: 4px; }}
     QListWidget::item:hover {{ background-color: {t['surface']}; color: {t['text']}; }}
     QListWidget::item:selected {{ background-color: {t['surface']}; color: {t['accent']}; }}
-    
+
     QLabel {{ color: {t['text3']}; font-size: 11px; font-weight: 600; letter-spacing: 0.4px; background: transparent; }}
     QLabel#lbl_titulo {{ color: {t['text']}; font-size: 14px; font-weight: 600; letter-spacing: -0.1px; }}
-    
+
     QWebEngineView {{
         border: 1px solid {t['border']};
         border-radius: 4px;
@@ -159,7 +159,7 @@ def build_stylesheet(t: dict) -> str:
     """
 
 
-# ── Componente de Guía de Uso Lateral ──────────────────────────────────────────
+# ── Panel lateral de guía de sintaxis ────────────────────────────────────────
 class PanelEjemplosLateral(QFrame):
     def __init__(self, parent, tema: dict):
         super().__init__(parent)
@@ -184,49 +184,60 @@ class PanelEjemplosLateral(QFrame):
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         scroll.setStyleSheet("background: transparent; border: none;")
 
-        cw = QWidget(); cw.setStyleSheet("background: transparent;")
-        cl = QVBoxLayout(cw); cl.setContentsMargins(0, 0, 4, 0); cl.setSpacing(10)
+        cw = QWidget()
+        cw.setStyleSheet("background: transparent;")
+        cl = QVBoxLayout(cw)
+        cl.setContentsMargins(0, 0, 4, 0)
+        cl.setSpacing(10)
 
         ejemplos = [
             ("TRANSFORMADAS DIRECTAS", [
-                ("Constante",        "5"),
-                ("Potencia",         "t**3"),
-                ("Exponencial",      "exp(-2*t)"),
-                ("Seno",             "sin(3*t)"),
-                ("Coseno",           "cos(3*t)"),
+                ("Constante",   "5"),
+                ("Potencia",    "t**3"),
+                ("Exponencial", "exp(-2*t)"),
+                ("Seno",        "sin(3*t)"),
+                ("Coseno",      "cos(3*t)"),
             ]),
             ("ECUACIONES DIFERENCIALES", [
-                ("1er orden",                    "y' + 2*y = 0; y(0)=1"),
-                ("2do orden",  "y'' + 3*y' + 2*y = 0; y(0)=1; y'(0)=5"),
-                ("Oscilatorio",                  "y'' + 4*y = cos(t); y(0)=0; y'(0)=0"),
+                ("1er orden",   "y' + 2*y = 0; y(0)=1"),
+                ("2do orden",   "y'' + 3*y' + 2*y = 0; y(0)=1; y'(0)=5"),
+                ("Oscilatorio", "y'' + 4*y = cos(t); y(0)=0; y'(0)=0"),
             ]),
             ("SINTAXIS REQUERIDA", [
-                ("Potencia t²",      "t**2   (no t^2)"),
-                ("Multiplicación",   "2*t    (no 2t)"),
-                ("Separador CI",     "; entre EDO y condiciones"),
+                ("Potencia t²",    "t**2   (no t^2)"),
+                ("Multiplicación", "2*t    (no 2t)"),
+                ("Separador CI",   "; entre EDO y condiciones"),
             ]),
         ]
 
         for titulo_sec, items in ejemplos:
             lbl_s = QLabel(titulo_sec)
-            lbl_s.setStyleSheet(f"font-size: 9px; font-weight: 700; color: {t['text3']}; letter-spacing: 0.5px; margin-top: 4px;")
+            lbl_s.setStyleSheet(
+                f"font-size: 9px; font-weight: 700; color: {t['text3']};"
+                "letter-spacing: 0.5px; margin-top: 4px;"
+            )
             cl.addWidget(lbl_s)
             for nombre, codigo in items:
-                fila = QHBoxLayout(); fila.setSpacing(6)
+                fila = QHBoxLayout()
+                fila.setSpacing(6)
                 lbl_n = QLabel(nombre)
-                lbl_n.setStyleSheet(f"color: {t['text2']}; font-size: 11px; min-width: 90px; max-width: 90px;")
+                lbl_n.setStyleSheet(
+                    f"color: {t['text2']}; font-size: 11px;"
+                    "min-width: 90px; max-width: 90px;"
+                )
                 lbl_n.setWordWrap(True)
-                
+
                 lbl_c = QPushButton(codigo)
                 lbl_c.setStyleSheet(f"""
                     background-color: {t['dlg_code_bg']}; color: {t['dlg_code_fg']};
                     font-family: 'SF Mono', 'Consolas', monospace; text-align: left;
-                    font-size: 10px; font-weight: 600; border: 1px solid {t['border']}; 
+                    font-size: 10px; font-weight: 600;
+                    border: 1px solid {t['border']};
                     border-radius: 4px; padding: 4px 6px;
                 """)
                 lbl_c.setCursor(Qt.CursorShape.PointingHandCursor)
                 lbl_c.clicked.connect(lambda checked, c=codigo: self.parent_ref.insertar_ejemplo(c))
-                
+
                 fila.addWidget(lbl_n)
                 fila.addWidget(lbl_c, stretch=1)
                 cl.addLayout(fila)
@@ -251,12 +262,12 @@ class InterfazCalculadora(QWidget):
 
     def init_ui(self):
         self.setWindowTitle("Transformadas de Laplace")
-        
+
         pantalla = QGuiApplication.primaryScreen().availableGeometry()
         self.ancho_base = 430
         self.ancho_extendido = 700
         alto_reducido = pantalla.height() - 40
-        
+
         self.resize(self.ancho_base, alto_reducido)
         self.setMinimumSize(self.ancho_base, 460)
         self.setMaximumSize(self.ancho_extendido, alto_reducido)
@@ -271,51 +282,54 @@ class InterfazCalculadora(QWidget):
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(14, 14, 14, 14)
 
-        # Título y acciones superiores
-        barra = QHBoxLayout(); barra.setSpacing(6)
+        # ── Barra superior ────────────────────────────────────────────────────
+        barra = QHBoxLayout()
+        barra.setSpacing(6)
         self.lbl_titulo = QLabel("Transformadas de Laplace")
         self.lbl_titulo.setObjectName("lbl_titulo")
-        barra.addWidget(self.lbl_titulo); barra.addStretch()
-        
-        self.btn_info = QPushButton("☰"); self.btn_info.setObjectName("btn_info")
+        barra.addWidget(self.lbl_titulo)
+        barra.addStretch()
+
+        self.btn_info = QPushButton("☰")
+        self.btn_info.setObjectName("btn_info")
         self.btn_info.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_info.clicked.connect(self.toggle_ejemplos_lateral)
         barra.addWidget(self.btn_info)
         main_layout.addLayout(barra)
 
-        # Campo de Entrada Principal (QLineEdit)
+        # ── Campo de entrada ──────────────────────────────────────────────────
         self.entry = QLineEdit()
         self.entry.setPlaceholderText("Ej: y'' + 3*y' + 2*y = 0; y(0)=1")
         main_layout.addWidget(self.entry)
 
-        # Teclado Unificado
+        # ── Teclado virtual ───────────────────────────────────────────────────
         pad_grid = QGridLayout()
         pad_grid.setSpacing(4)
         pad_grid.setContentsMargins(0, 2, 0, 2)
 
         botones = [
-            ('y',      'y',       'edo',  0, 0),            ('7',      '7',       'op',   0, 5),
-            ("y'",     "y'",      'edo',  0, 1),            ('8',      '8',       'op',   0, 6),
-            ("y''",    "y''",     'edo',  0, 2),            ('9',      '9',       'op',   0, 7),
-            ('=',      '=',       'edo',  0, 3),            ('/',      '/',       'op',   0, 8),
-            (';',      '; ',      'edo',  0, 4),            
-            
-            ('t',      't',       'var',  1, 0),            ('4',      '4',       'op',   1, 5),
-            ('s',      's',       'var',  1, 1),            ('5',      '5',       'op',   1, 6),
-            ('π',      'pi',      'var',  1, 2),            ('6',      '6',       'op',   1, 7),
-            ('α',      'a',       'var',  1, 3),            ('*',      '*',       'op',   1, 8),
-            ('s²',     's**2',    'op',   1, 4),            
-            
-            ('sin',    'sin(',    'func', 2, 0),            ('1',      '1',       'op',   2, 5),
-            ('cos',    'cos(',    'func', 2, 1),            ('2',      '2',       'op',   2, 6),
-            ('eⁿ',     'exp(',    'func', 2, 2),            ('3',      '3',       'op',   2, 7),
-            ('(',      '(',       'op',   2, 3),            ('-',      '-',       'op',   2, 8),
-            (')',      ')',       'op',   2, 4),            
-            
-            ('sinh',   'sinh(',   'func', 3, 0),            ('0',      '0',       'op',   3, 5),
-            ('cosh',   'cosh(',   'func', 3, 1),            ('.',      '.',       'op',   3, 6),
-            ("y'(0)=", "y'(0)=",  'edo',  3, 2),            ('+',      '+',       'op',   3, 7),
-            ('tⁿ',     't**n',    'op',   3, 3),            
+            ('y',      'y',       'edo',  0, 0), ('7',      '7',       'op',  0, 5),
+            ("y'",     "y'",      'edo',  0, 1), ('8',      '8',       'op',  0, 6),
+            ("y''",    "y''",     'edo',  0, 2), ('9',      '9',       'op',  0, 7),
+            ('=',      '=',       'edo',  0, 3), ('/',      '/',       'op',  0, 8),
+            (';',      '; ',      'edo',  0, 4),
+
+            ('t',      't',       'var',  1, 0), ('4',      '4',       'op',  1, 5),
+            ('s',      's',       'var',  1, 1), ('5',      '5',       'op',  1, 6),
+            ('π',      'pi',      'var',  1, 2), ('6',      '6',       'op',  1, 7),
+            ('α',      'a',       'var',  1, 3), ('*',      '*',       'op',  1, 8),
+            ('s²',     's**2',    'op',   1, 4),
+
+            ('sin',    'sin(',    'func', 2, 0), ('1',      '1',       'op',  2, 5),
+            ('cos',    'cos(',    'func', 2, 1), ('2',      '2',       'op',  2, 6),
+            ('eⁿ',     'exp(',    'func', 2, 2), ('3',      '3',       'op',  2, 7),
+            ('(',      '(',       'op',   2, 3), ('-',      '-',       'op',  2, 8),
+            (')',      ')',       'op',   2, 4),
+
+            ('sinh',   'sinh(',   'func', 3, 0), ('0',      '0',       'op',  3, 5),
+            ('cosh',   'cosh(',   'func', 3, 1), ('.',      '.',       'op',  3, 6),
+            ("y'(0)=", "y'(0)=",  'edo',  3, 2), ('+',      '+',       'op',  3, 7),
+            ('tⁿ',     't**n',    'op',   3, 3),
         ]
 
         self._botones_pad = []
@@ -328,48 +342,72 @@ class InterfazCalculadora(QWidget):
             self._botones_pad.append(btn)
         main_layout.addLayout(pad_grid)
 
-        # Botones de Acción Principales
-        layout_acciones = QHBoxLayout(); layout_acciones.setSpacing(4)
-        self.btn_limpiar_todo = QPushButton("C"); self.btn_limpiar_todo.setObjectName("btn_limpiar")
+        # ── Botones de acción ─────────────────────────────────────────────────
+        layout_acciones = QHBoxLayout()
+        layout_acciones.setSpacing(4)
+
+        self.btn_limpiar_todo = QPushButton("C")
+        self.btn_limpiar_todo.setObjectName("btn_limpiar")
         self.btn_limpiar_todo.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_limpiar_todo.clicked.connect(lambda: self.entry.clear())
         self.btn_limpiar_todo.setFixedWidth(50)
 
-        self.btn_ir = QPushButton("Calcular"); self.btn_ir.setObjectName("btn_ir")
+        self.btn_ir = QPushButton("Calcular")
+        self.btn_ir.setObjectName("btn_ir")
         self.btn_ir.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_limpiar = QPushButton("⌫"); self.btn_limpiar.setObjectName("btn_limpiar")
+
+        self.btn_limpiar = QPushButton("⌫")
+        self.btn_limpiar.setObjectName("btn_limpiar")
         self.btn_limpiar.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_limpiar.clicked.connect(lambda: self.entry.backspace())
-        
+
         layout_acciones.addWidget(self.btn_limpiar_todo, stretch=1)
         layout_acciones.addWidget(self.btn_ir, stretch=4)
         layout_acciones.addWidget(self.btn_limpiar, stretch=1)
         main_layout.addLayout(layout_acciones)
 
-        # Etiqueta de Resultado
+        # ── Área de resultado ─────────────────────────────────────────────────
         self.lbl_res = QLabel("RESULTADO")
         main_layout.addWidget(self.lbl_res)
 
-        # Área de Visualización Web (QWebEngineView)
+        # FIX SCROLL REAL: QWebEngineView dentro de QScrollArea.
+        # El web_view crece libremente en altura según su contenido (contentsSizeChanged),
+        # y el QScrollArea provee la barra de scroll, igual que QListWidget lo hace
+        # internamente para el historial.
         self.web_view = QWebEngineView()
-        # SOLUCIÓN BUG PANTALLA BLANCA: Forzar al motor interno a iniciar con el color exacto antes del primer renderizado
         self.web_view.page().setBackgroundColor(QColor("#252525"))
         self.web_view.setStyleSheet("background-color: #252525;")
         self.web_view.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
         self.web_view.settings().setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
-        self.web_view.setMinimumHeight(70)  
-        self.web_view.setMaximumHeight(180) 
+        # Sin altura fija: el widget se redimensiona solo al cambiar el contenido HTML
         self.web_view.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        
-        self.fade_effect = QGraphicsOpacityEffect(self)
-        self.web_view.setGraphicsEffect(self.fade_effect)
-        main_layout.addWidget(self.web_view)
+        self.web_view.setMinimumHeight(80)
+        self.web_view.setMaximumHeight(16777215)  # sin tope
+        # Cuando el contenido HTML cambia de tamaño, ajustar la altura del widget
+        self.web_view.page().contentsSizeChanged.connect(self._ajustar_altura_web)
 
-        # Etiqueta de Historial
+        self.scroll_resultado = QScrollArea()
+        self.scroll_resultado.setWidget(self.web_view)
+        self.scroll_resultado.setWidgetResizable(True)
+        self.scroll_resultado.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_resultado.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scroll_resultado.setStyleSheet(
+            "QScrollArea { border: none; background: transparent; }"
+            "QScrollBar:vertical { width: 6px; background: transparent; }"
+            "QScrollBar::handle:vertical { background: rgba(255,255,255,0.15); border-radius: 3px; }"
+            "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }"
+        )
+        self.scroll_resultado.setMinimumHeight(80)
+        self.scroll_resultado.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+
+        self.fade_effect = QGraphicsOpacityEffect(self)
+        self.scroll_resultado.setGraphicsEffect(self.fade_effect)
+        main_layout.addWidget(self.scroll_resultado, stretch=2)
+
+        # ── Historial ─────────────────────────────────────────────────────────
         self.lbl_historial = QLabel("HISTORIAL")
         main_layout.addWidget(self.lbl_historial)
 
-        # Lista de Historial
         self.historial_list = QListWidget()
         self.historial_list.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         main_layout.addWidget(self.historial_list, stretch=1)
@@ -388,7 +426,8 @@ class InterfazCalculadora(QWidget):
         self.setStyleSheet(build_stylesheet(t))
         self.panel_ejemplos.init_panel(t)
         for btn in self._botones_pad:
-            btn.style().unpolish(btn); btn.style().polish(btn)
+            btn.style().unpolish(btn)
+            btn.style().polish(btn)
 
     # ── WebView ───────────────────────────────────────────────────────────────
     def _render_web(self, contenido: str):
@@ -399,18 +438,21 @@ class InterfazCalculadora(QWidget):
         )
         self.web_view.setHtml(html)
 
+    def _ajustar_altura_web(self, size):
+        """Redimensiona el QWebEngineView a la altura real del contenido HTML.
+        El QScrollArea que lo contiene provee el scroll cuando ese alto
+        supera el espacio disponible, igual que QListWidget con sus ítems."""
+        alto = max(80, int(size.height()) + 20)  # +20 padding inferior
+        self.web_view.setFixedHeight(alto)
+
     def mostrar_html(self, html_str: str):
         import re
-        # SOLUCIÓN REEMPLAZO L DE LAPLACE: Limpia cualquier ocurrencia de \mathcal{L} o \mathcal L por una L estándar en el string entrante
-        html_str = re.sub(r'\\mathcal\s*\{\s*L\s*\}', 'L', html_str)
-        html_str = re.sub(r'\\mathcal\s*L', 'L', html_str)
-        
         match = re.search(r'<body[^>]*>(.*?)</body>', html_str, re.DOTALL | re.IGNORECASE)
         contenido = match.group(1).strip() if match else html_str
         self._ultimo_html_contenido = contenido
         self._render_web(contenido)
 
-    # ── Control de la UI Lateral ──────────────────────────────────────────────
+    # ── Panel lateral ─────────────────────────────────────────────────────────
     def toggle_ejemplos_lateral(self):
         pantalla = QGuiApplication.primaryScreen().availableGeometry()
         if self.panel_ejemplos.isVisible():
@@ -423,7 +465,6 @@ class InterfazCalculadora(QWidget):
             self.setMinimumWidth(self.ancho_extendido)
             self.setMaximumWidth(self.ancho_extendido)
             self.resize(self.ancho_extendido, self.height())
-        
         self.move(pantalla.x() + (pantalla.width() - self.width()) // 2, self.y())
 
     def insertar_ejemplo(self, formula: str):
@@ -432,7 +473,7 @@ class InterfazCalculadora(QWidget):
             formula = formula.split("   (")[0]
         self.insertar(formula)
 
-    # ── API pública de la Interfaz Gráfica ─────────────────────────────────────
+    # ── API pública ───────────────────────────────────────────────────────────
     def insertar(self, val):
         self.entry.insert(val)
         self.entry.setFocus()
@@ -441,7 +482,8 @@ class InterfazCalculadora(QWidget):
         self.anim_fade = QPropertyAnimation(self.fade_effect, b"opacity")
         self.anim_fade.setDuration(300)
         self.anim_fade.setEasingCurve(QEasingCurve.Type.OutCubic)
-        self.anim_fade.setStartValue(0.0); self.anim_fade.setEndValue(1.0)
+        self.anim_fade.setStartValue(0.0)
+        self.anim_fade.setEndValue(1.0)
         self.anim_fade.start()
 
     def obtener_texto(self):
